@@ -102,7 +102,7 @@ const Page = () => {
         setOperateType(record ? 'modify' : 'create')
         form.setFieldsValue({
             ...record,
-            occur_date: dayjs(record?.occur_date, 'YYYY-MM-DD'),
+            occur_date: dayjs(record?.occur_date || new Date().toISOString().slice(0,10), 'YYYY-MM-DD'),
         })
         setIsModalOpen(true)
     }
