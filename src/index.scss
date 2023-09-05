@@ -1,0 +1,22 @@
+@import 'global/styles';
+
+*,
+*:before,
+*:after {
+  font-family: $font-family;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root, #root > div {
+  height: 100%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.pointer {
+  cursor: pointer;
+}

@@ -1,0 +1,77 @@
+{
+  "name": "life_client_cra",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "private": true,
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.5.0",
+    "antd": "^5.7.3",
+    "axios": "^0.24.0",
+    "classnames": "^2.2.6",
+    "date-fns": "^2.30.0",
+    "dotenv": "^8.1.0",
+    "druikit": "^0.0.28",
+    "lodash": "^4.17.15",
+    "moment": "^2.29.4",
+    "qs": "^6.10.1",
+    "query-string": "^6.10.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^5.3.4",
+    "react-scripts": "^5.0.1",
+    "sass": "^1.62.1",
+    "typescript": "5.0.4",
+    "use-deep-compare-effect": "^1.6.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/classnames": "^2.2.9",
+    "@types/lodash": "^4.14.149",
+    "@types/node-sass": "^4.11.3",
+    "@types/react": "^18.0.35",
+    "@types/react-dom": "^18.0.11",
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
+    "eslint": "^8.1.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^1.18.2",
+    "react-docgen-typescript": "^2.1.0",
+    "tslint-config-prettier": "^1.18.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint:ts": "eslint --ext=jsx,ts,tsx src --fix",
+    "lint:ts:test": "eslint --ext=jsx,ts,tsx src"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all",
+    "printWidth": 100
+  }
+}

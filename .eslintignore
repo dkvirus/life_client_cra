@@ -1,0 +1,5 @@
+src/serviceWorker.ts
+src/**/*.test.*
+src/**/*.d.ts
+public/config.js
+build/*

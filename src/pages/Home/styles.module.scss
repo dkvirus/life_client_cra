@@ -1,0 +1,48 @@
+@import '~global/styles';
+
+// should go in a component
+$logoSize: 28px;
+
+.appName {
+  font-size: $font-size-xxl;
+  color: $text-dark;
+  align-self: center;
+}
+
+.topNav {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+
+  >div {
+    height: 100%;
+    margin-left: 30px;
+  }
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  padding: 0 1em;
+  background: $white;
+  height: 65px;
+}
+
+.products-container {
+  display: flex;
+}
+
+.page-container {
+  padding-bottom: 80px;
+  padding-top: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+  box-sizing: border-box;
+  overflow-x: scroll;
+  width: calc(100vw - 85px);
+  
+  &>div {
+    padding-top: 0;
+  }
+}
