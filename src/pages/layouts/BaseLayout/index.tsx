@@ -50,7 +50,7 @@ const BaseLayout = ({
           </Sider>
           <Layout>
             <Header style={{ padding: 0 }}>
-              <Flex alignItems="center" isFullHeight>
+              <Flex alignItems="center" fullHeight>
                 <Flex1 />
                 <Button 
                   type="link"

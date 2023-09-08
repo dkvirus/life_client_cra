@@ -172,10 +172,23 @@ export async function modifyDreamlinOrder(data) {
     return result.detail.data
 }
 
-export async function listDreamlinOrders() {
+export async function listDreamlinOrders({
+    startDate,
+    endDate,
+    platformSupplyName,
+}: {
+    startDate?: string;
+    endDate?: string;
+    platformSupplyName?: string;
+}) {
     const result = await request({
         url: '/dreamlin/orders',
         method: 'get',
+        params: {
+            start_date: startDate,
+            end_date: endDate,
+            platform_supply_name: platformSupplyName,
+        },
     })
     return result.detail.data
 }
