@@ -157,6 +157,7 @@ const Page = () => {
 
     const handleOk = async () => {
         const values = form.getFieldsValue()
+        values.occur_date = dayjs(values.occur_date).format('YYYY-MM-DD')
         if (operateType === 'create') {
             await createDreamlinOrder(values)
         } else {
