@@ -5,6 +5,7 @@ import { Box, Flex, Flex1, InputNumber } from 'druikit';
 import { createDreamlinOrder, listDreamlinOrders, modifyDreamlinOrder, removeDreamlinOrder } from 'apis';
 import dayjs from 'dayjs'
 import { DateRange } from 'components/DateRange';
+import { getTotalPrice } from './utils';
 
 interface DataType {
     id: string;
@@ -27,7 +28,7 @@ const Page = () => {
             title: '日期',
             dataIndex: 'occur_date',
             key: 'occur_date',
-            width: 100,
+            width: 120,
             fixed: 'left',
             render(value, record, index) {
                 return <>{value.slice(0, 10)}</>
@@ -62,41 +63,41 @@ const Page = () => {
             title: '平台订单号',
             dataIndex: 'platform_order_number',
             key: 'platform_order_number',
-            width: 170,
+            width: 220,
         },
         {
             title: '小卖铺订单号',
             dataIndex: 'store_order_number',
             key: 'store_order_number',
             ellipsis: true,
-            width: 170,
+            width: 220,
         },
         {
             title: '供应商名称',
             dataIndex: 'platform_supply_name',
             key: 'platform_supply_name',
-            width: 130,
+            width: 200,
             ellipsis: true,
         },
         {
             title: '供应商ID',
             dataIndex: 'platform_supply_id',
             key: 'platform_supply_id',
-            width: 170,
+            width: 200,
             ellipsis: true,
         },
         {
             title: '供应商备注',
             dataIndex: 'platform_supply_remark',
             key: 'platform_supply_remark',
-            width: 130,
+            width: 200,
             ellipsis: true,
         },
         {
             title: '备注',
             dataIndex: 'remark',
             key: 'remark',
-            width: 130,
+            width: 200,
             ellipsis: true,
         },
         {
@@ -125,7 +126,8 @@ const Page = () => {
     /* ******************************* 查询条件 **************************************** */
     const [ platformSupplyName, setPlatformSupplyName ] = useState('')
     const [ dateRangeValue, setDateRangeValue ] = useState('')
-    const [ dataSource, setDataSource ] = useState<DataType[]>([]) 
+    const [ dataSource, setDataSource ] = useState<DataType[]>([])
+    const [ totalPrice, setTotalPrice ] = useState('0')
 
     const query = async () => {
         let startDate, endDate
@@ -134,6 +136,7 @@ const Page = () => {
         }
         
         const result = await listDreamlinOrders({ platformSupplyName, startDate, endDate })
+        setTotalPrice(getTotalPrice(result))
         setDataSource(result)
     }
 
@@ -148,10 +151,17 @@ const Page = () => {
 
     const showModal = (record?: DataType) => {
         setOperateType(record ? 'modify' : 'create')
-        form.setFieldsValue({
-            ...record,
-            occur_date: dayjs(record?.occur_date || new Date().toISOString().slice(0,10), 'YYYY-MM-DD'),
-        })
+        if (record) {
+            form.setFieldsValue({
+                ...record,
+                occur_date: dayjs(record?.occur_date || new Date().toISOString().slice(0,10), 'YYYY-MM-DD'),
+            })
+        } else {
+            form.resetFields()
+            form.setFieldsValue({
+                occur_date: dayjs(new Date().toISOString().slice(0,10), 'YYYY-MM-DD'),
+            })
+        }
         setIsModalOpen(true)
     }
 
@@ -180,7 +190,7 @@ const Page = () => {
     return (
         <>
             <Typography.Title level={3}>梦林的订单管理</Typography.Title>
-            <Flex justifyContent="flex-end">
+            <Flex justifyContent="flex-end" alignItems="center">
                 <DateRange 
                     onChange={value => {
                         setDateRangeValue(value)
@@ -194,6 +204,8 @@ const Page = () => {
                         setPlatformSupplyName(value)
                     }}
                 />
+                <Box width={10} />
+                总差价: {totalPrice}
                 <Flex1 />
                 <Button type="primary" onClick={() => showModal()}>新增</Button>
             </Flex>
