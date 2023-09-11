@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Table, Button, Space, Modal, Form, Input, Typography, Popconfirm, DatePicker, Select } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { Box, Flex, Flex1, InputNumber } from 'druikit';
-import { createDreamlinOrder, listDreamlinOrders, modifyDreamlinOrder, removeDreamlinOrder } from 'apis';
+import { createDreamlinOrder, listDreamlinOrders, listDreamlinSuppliers, modifyDreamlinOrder, removeDreamlinOrder } from 'apis';
 import dayjs from 'dayjs'
 import { DateRange } from 'components/DateRange';
 import { getTotalPrice } from './utils';
@@ -13,9 +13,7 @@ interface DataType {
     platform_name: string;
     platform_price: number;
     platform_order_number: string;
-    platform_supply_name: string;
-    platform_supply_id: string;
-    platform_supply_remark: string;
+    platform_supplier_id?: string;
     store_price: number;
     store_order_number: string;
     price_diff: number;
@@ -78,6 +76,10 @@ const Page = () => {
             key: 'platform_supply_name',
             width: 200,
             ellipsis: true,
+            render(value, record, index) {
+                const name = supplierDataSource?.find(item => item?.id === record.platform_supplier_id)?.name
+                return <>{name}</>
+            },
         },
         {
             title: '供应商ID',
@@ -85,6 +87,10 @@ const Page = () => {
             key: 'platform_supply_id',
             width: 200,
             ellipsis: true,
+            render(value, record, index) {
+                const code = supplierDataSource?.find(item => item?.id === record.platform_supplier_id)?.code
+                return <>{code}</>
+            },
         },
         {
             title: '供应商备注',
@@ -92,6 +98,10 @@ const Page = () => {
             key: 'platform_supply_remark',
             width: 200,
             ellipsis: true,
+            render(value, record, index) {
+                const remark = supplierDataSource?.find(item => item?.id === record.platform_supplier_id)?.remark
+                return <>{remark}</>
+            },
         },
         {
             title: '备注',
@@ -124,7 +134,7 @@ const Page = () => {
     ]
 
     /* ******************************* 查询条件 **************************************** */
-    const [ platformSupplyName, setPlatformSupplyName ] = useState('')
+    const [ platformSupplierId, setPlatformSupplierId ] = useState()
     const [ dateRangeValue, setDateRangeValue ] = useState('')
     const [ dataSource, setDataSource ] = useState<DataType[]>([])
     const [ totalPrice, setTotalPrice ] = useState('0')
@@ -135,14 +145,27 @@ const Page = () => {
             [ startDate, endDate ] = dateRangeValue.split('_')
         }
         
-        const result = await listDreamlinOrders({ platformSupplyName, startDate, endDate })
+        const result = await listDreamlinOrders({ platformSupplierId, startDate, endDate })
         setTotalPrice(getTotalPrice(result))
         setDataSource(result)
     }
 
     useEffect(() => {
         query()
-    }, [ platformSupplyName, dateRangeValue ])
+    }, [ platformSupplierId, dateRangeValue ])
+
+    const [ supplierOptions, setSupplierOptions ] = useState([])
+    const [ supplierDataSource, setSupplierDataSource ] = useState<{id: string; name: string; code: string; remark?: string;}[]>([])
+
+    const querySuppliers = async () => {
+        const result = await listDreamlinSuppliers({})
+        setSupplierDataSource(result)
+        setSupplierOptions(result.map(r => ({ value: r.id, label: r.name })))
+    }
+
+    useEffect(() => {
+        querySuppliers()
+    }, [])
 
     /* ******************************* 模态框相关 **************************************** */
     const [ form ] = Form.useForm()
@@ -197,12 +220,15 @@ const Page = () => {
                     }}
                 />
                 <Box width={10} />
-                <Input.Search
-                    placeholder="根据供应商名称模糊查询" 
-                    style={{ width: '250px' }}
-                    onSearch={value => {
-                        setPlatformSupplyName(value)
-                    }}
+                <Select 
+                    options={supplierOptions}
+                    value={platformSupplierId}
+                    onChange={value => setPlatformSupplierId(value)}
+                    placeholder="请选择供应商"
+                    allowClear
+                    showSearch
+                    filterOption={(input, option: any) => (option?.label ?? '').includes(input)}
+                    style={{ width: 250 }}
                 />
                 <Box width={10} />
                 总差价: {totalPrice}
@@ -272,26 +298,12 @@ const Page = () => {
 
                     <Form.Item
                         label="平台供应商"
-                        name="platform_supply_name"
-                        rules={[ { message: '请输入供应商!' } ]}
+                        name="platform_supplier_id"
+                        rules={[ { message: '请选择供应商!' } ]}
                     >
-                        <Input placeholder="请输入供应商!" />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="平台供应商ID"
-                        name="platform_supply_id"
-                        rules={[ { message: '请输入供应商ID!' } ]}
-                    >
-                        <Input placeholder="请输入供应商ID!" />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="平台供应商备注"
-                        name="platform_supply_remark"
-                        rules={[ { message: '请输入供应商备注!' } ]}
-                    >
-                        <Input placeholder="请输入供应商备注!" />
+                        <Select 
+                            options={supplierOptions}
+                        />
                     </Form.Item>
 
                     <Form.Item
