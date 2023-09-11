@@ -192,3 +192,48 @@ export async function listDreamlinOrders({
     })
     return result.detail.data
 }
+
+/* ******************************** dreamlin-supplier ************************************* */
+export async function createDreamlinSupplier(data) {
+    const result = await request({
+        url: '/dreamlin/supplier',
+        method: 'post',
+        data,
+    })
+    return result.detail.data
+}
+
+export async function removeDreamlinSupplier(id: string) {
+    const result = await request({
+        url: `/dreamlin/supplier/${id}`,
+        method: 'delete',
+    })
+    return result.detail.data
+}
+
+export async function modifyDreamlinSupplier(data) {
+    const result = await request({
+        url: `/dreamlin/supplier/${data.id}`,
+        method: 'put',
+        data,
+    })
+    return result.detail.data
+}
+
+export async function listDreamlinSuppliers({
+    name,
+    code,
+}: {
+    name?: string;
+    code?: string;
+}) {
+    const result = await request({
+        url: '/dreamlin/suppliers',
+        method: 'get',
+        params: {
+            name,
+            code,
+        },
+    })
+    return result.detail.data
+}

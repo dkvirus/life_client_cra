@@ -30,6 +30,11 @@ export const items = [
         label: '梦林的订单管理',
         privs: [ 'MENU_ML_ORDER_READ', 'MENU_ML_ORDER_WRITE' ],
     },
+    {
+        key: 'dreamlin-supplier',
+        label: '梦林的供应商管理',
+        privs: [ 'MENU_ML_SUPPLIER_READ', 'MENU_ML_SUPPLIER_WRITE' ],
+    },
 ]
 
 export function getMenuItems(privs: string[]) {
