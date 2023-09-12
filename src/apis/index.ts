@@ -145,6 +145,41 @@ export async function listPrivs() {
     return result.detail.data
 }
 
+/* ******************************** dicts ************************************* */
+export async function createDict(data) {
+    const result = await request({
+        url: '/dict',
+        method: 'post',
+        data,
+    })
+    return result.detail.data
+}
+
+export async function removeDict(code: string) {
+    const result = await request({
+        url: `/dict/${code}`,
+        method: 'delete',
+    })
+    return result.detail.data
+}
+
+export async function modifyDict(data) {
+    const result = await request({
+        url: `/dict/${data.code}`,
+        method: 'put',
+        data,
+    })
+    return result.detail.data
+}
+
+export async function listDicts() {
+    const result = await request({
+        url: '/dicts',
+        method: 'get',
+    })
+    return result.detail.data
+}
+
 /* ******************************** dreamlin-order ************************************* */
 export async function createDreamlinOrder(data) {
     const result = await request({

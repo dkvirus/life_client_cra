@@ -28,7 +28,7 @@ const Page = () => {
             key: 'privs',
             render(value) {
                 return (
-                    <Space>
+                    <Space wrap>
                         {
                             value.map((v: string) => (
                                 <Tag key={v}>
