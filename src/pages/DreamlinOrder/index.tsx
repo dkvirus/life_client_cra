@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Table, Button, Space, Modal, Form, Input, Typography, Popconfirm, DatePicker, Select } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { Box, Flex, Flex1, InputNumber } from 'druikit';
-import { createDreamlinOrder, listDreamlinOrders, listDreamlinSuppliers, modifyDreamlinOrder, removeDreamlinOrder } from 'apis';
+import { createDreamlinOrder, listDicts, listDreamlinOrders, listDreamlinSuppliers, modifyDreamlinOrder, removeDreamlinOrder } from 'apis';
 import dayjs from 'dayjs'
 import { DateRange } from 'components/DateRange';
 import { getTotalPrice } from './utils';
@@ -154,6 +154,20 @@ const Page = () => {
         query()
     }, [ platformSupplierId, dateRangeValue ])
 
+    /* ******************************* 平台 **************************************** */
+    const [ platformOptions, setPlatformOptions ] = useState([])
+
+    const queryDicts = async () => {
+        const result = await listDicts()
+        const options = result.find(item => item.code === 'DY_PLATFORM')?.children?.map(item => ({ value: item.code, label: item.name }))
+        setPlatformOptions(options)
+    }
+
+    useEffect(() => {
+        queryDicts()
+    }, [])
+
+    /* ******************************* 供应商 **************************************** */
     const [ supplierOptions, setSupplierOptions ] = useState([])
     const [ supplierDataSource, setSupplierDataSource ] = useState<{id: string; name: string; code: string; remark?: string;}[]>([])
 
@@ -275,7 +289,7 @@ const Page = () => {
                         rules={[ { required: true, message: '请选择平台名称!' } ]}
                     >
                         <Select 
-                            options={[ '1688', '抖平台' ].map(name => ({ value: name, label: name }))}
+                            options={platformOptions}
                             placeholder="请选择平台名称!"
                         />
                     </Form.Item>
