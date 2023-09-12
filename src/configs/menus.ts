@@ -1,7 +1,7 @@
 import Dashboard from 'pages/Dashboard'
-import User from 'pages/User'
-import Role from 'pages/Role'
-import Priv from 'pages/Priv'
+import SysUser from 'pages/SysUser'
+import SysRole from 'pages/SysRole'
+import SysPriv from 'pages/SysPriv'
 import SysDict from 'pages/SysDict'
 import DreamlinOrder from 'pages/DreamlinOrder'
 import DreamlinSupplier from 'pages/DreamlinSupplier'
@@ -13,15 +13,15 @@ export const menus = [
     },
     {
         pathname: '/user',
-        component: User,
+        component: SysUser,
     },
     {
         pathname: '/role',
-        component: Role,
+        component: SysRole,
     },
     {
         pathname: '/priv',
-        component: Priv,
+        component: SysPriv,
     },
     {
         pathname: '/dict',
