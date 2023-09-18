@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Button, Space, Modal, Form, Input, Typography, Select, Tooltip, Image, Tag } from 'antd'
+import { Table, Button, Space, Modal, Form, Input, Typography, Popconfirm, Select, Tooltip, Image, Tag, InputNumber } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { Box, Flex, Flex1 } from 'druikit';
-import { createDreamlinGood, listDreamlinGoods, modifyDreamlinGood } from 'apis';
+import { createDreamlinGood, createDreamlinSku, listDreamlinGoods, listDreamlinSkus, modifyDreamlinGood, modifyDreamlinSku, removeDreamlinGood } from 'apis';
 
 interface DataType {
     id: string;
-    code: string;
+    good_id: string;
     name: string;
-    thumbnail: string;
+    cost_price: number;
+    sale_price: number;
+    pinduoduo_price?: number;
+    douyin_price?: number;
     status: string;
     remark?: string;
-    launch_date?: string;
 }
 
 const statusOptions = [
@@ -22,44 +24,75 @@ const statusOptions = [
 const Page = () => {
     const columns: ColumnsType<DataType> = [
         {
-            title: '商品图片',
-            dataIndex: 'thumbnail',
-            key: 'thumbnail',
+            title: '商品信息',
+            dataIndex: 'good_id',
+            key: 'good_id',
+            width: 400,
             render(value, record, index) {
+                const good = goodDataSource.find(item => item.id === value)
                 return (
-                    <Image src={value} preview width={100} />
+                    <Space direction="horizontal" style={{ width: '100%' }}>
+                        <Image src={good.thumbnail} width={100} preview></Image>
+                        <Space direction="vertical" style={{ width: '100%' }}>
+                            <Tooltip>
+                                <Typography.Text copyable>{good.name}</Typography.Text>
+                            </Tooltip>
+                            <Tooltip>
+                                <Typography.Text copyable>{good.code}</Typography.Text>
+                            </Tooltip>
+                        </Space>
+                    </Space>
                 )
             },
         },
         {
-            title: '商品名称',
+            title: 'sku 名称',
             dataIndex: 'name',
             key: 'name',
-            ellipsis: true,
+            width: 120,
             render(value, record, index) {
                 return (
                     <Tooltip title={value}>
-                        <Typography.Text ellipsis copyable>{value}</Typography.Text>
+                        <Typography.Text>{value}</Typography.Text>
                     </Tooltip>
                 )
             },
         },
         {
-            title: '商品ID',
-            dataIndex: 'code',
-            key: 'code',
+            title: '成本价/售价',
+            dataIndex: 'cost_price',
+            key: 'cost_price',
+            width: 200,
             render(value, record, index) {
+                const rate = record.cost_price === 0 ? 0 : (record.sale_price - record.cost_price) / record.cost_price * 100
                 return (
-                    <Tooltip title={value}>
-                        <Typography.Text ellipsis copyable>{value}</Typography.Text>
-                    </Tooltip>
-                )
+                    <Space direction="vertical">
+                        <Typography.Text>成本价: <Tag color="orange">{record.cost_price}</Tag></Typography.Text>
+                        <Typography.Text>售价: <Tag color="blue">{record.sale_price}</Tag></Typography.Text>
+                        <Typography.Text>价格涨幅: <Tag color="green">{rate.toFixed(1)}%</Tag></Typography.Text>
+                    </Space>
+                )                
             },
         },
         {
-            title: '商品状态',
+            title: '其它平台价格',
+            dataIndex: 'other_price',
+            key: 'other_price',
+            width: 200,
+            render(value, record, index) {
+                return (
+                    <Space direction="vertical">
+                        <Typography.Text>拼多多价格: <Tag>{record.pinduoduo_price}</Tag></Typography.Text>
+                        <Typography.Text>抖音平台价格: <Tag>{record.douyin_price}</Tag></Typography.Text>
+                    </Space>
+                )                
+            },
+        },
+        {
+            title: '状态',
             dataIndex: 'status',
             key: 'status',
+            width: 70,
             render(value, record, index) {
                 if (value === 'on sale') {
                     return <Tag color="blue" >在售</Tag>
@@ -71,14 +104,10 @@ const Page = () => {
             },
         },
         {
-            title: '发布日期',
-            dataIndex: 'launch_date',
-            key: 'launch_date',
-        },
-        {
             title: '商品备注',
             dataIndex: 'remark',
             key: 'remark',
+            width: 100,
         },
         {
             title: '操作',
@@ -92,10 +121,21 @@ const Page = () => {
         },
     ]
 
+    const [ goodDataSource, setGoodDataSource ] = useState<any[]>([])
+    const [ goodOptions, setGoodOptions ] = useState([])
+
+    useEffect(() => {
+        listDreamlinGoods()
+            .then(result => {
+                setGoodDataSource(result)
+                setGoodOptions(result.map(item => ({ label: item.name, value: item.id })))
+            })
+    }, [])
+
     const [ dataSource, setDataSource ] = useState<DataType[]>([]) 
 
     const query = async () => {
-        const result = await listDreamlinGoods()
+        const result = await listDreamlinSkus()
         setDataSource(result)
     }
 
@@ -122,9 +162,13 @@ const Page = () => {
     const handleOk = async () => {
         const values = form.getFieldsValue()
         if (operateType === 'create') {
-            await createDreamlinGood(values)
+            await createDreamlinSku(values)
         } else {
-            await modifyDreamlinGood(values)
+            await modifyDreamlinSku({
+                ...values,
+                pinduoduo_price: !values.pinduoduo_price ? undefined : values.pinduoduo_price,
+                douyin_price: !values.douyin_price ? undefined : values.douyin_price,
+            })
         }
         setIsModalOpen(false)
         form.resetFields()
@@ -137,7 +181,7 @@ const Page = () => {
 
     return (
         <>
-            <Typography.Title level={3}>梦林的商品管理</Typography.Title>
+            <Typography.Title level={3}>梦林的 SKU 管理</Typography.Title>
             <Flex justifyContent="flex-end">
                 {/* <Input.Search
                     placeholder="根据供应商名称模糊查询" 
@@ -164,7 +208,7 @@ const Page = () => {
                 bordered
                 rowKey={record => record.id}
             />
-            <Modal title="商品操作" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="SKU 操作" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <Form
                     name="basic"
                     form={form}
@@ -183,15 +227,15 @@ const Page = () => {
                     </Form.Item>
 
                     <Form.Item
-                        label="商品ID"
-                        name="code"
-                        rules={[ { required: true, message: '请输入商品ID!' } ]}
+                        label="商品"
+                        name="good_id"
+                        rules={[ { required: true, message: '请选择商品ID!' } ]}
                     >
-                        <Input placeholder="请输入" />
+                        <Select options={goodOptions} />
                     </Form.Item>
 
                     <Form.Item
-                        label="商品名称"
+                        label="SKU 名称"
                         name="name"
                         rules={[ { required: true, message: '请输入商品名称!' } ]}
                     >
@@ -199,15 +243,39 @@ const Page = () => {
                     </Form.Item>
 
                     <Form.Item
-                        label="商品缩略图"
-                        name="thumbnail"
-                        rules={[ { required: true, message: '请输入商品缩略图!' } ]}
+                        label="成本价"
+                        name="cost_price"
+                        rules={[ { required: true, message: '请输入成本价!' } ]}
                     >
-                        <Input placeholder="请输入" />
+                        <InputNumber placeholder="请输入" />
                     </Form.Item>
 
                     <Form.Item
-                        label="商品状态"
+                        label="售价"
+                        name="sale_price"
+                        rules={[ { required: true, message: '请输入售价价!' } ]}
+                    >
+                        <InputNumber placeholder="请输入" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="拼多多价格"
+                        name="pinduoduo_price"
+                        rules={[ { message: '请输入拼多多价格!' } ]}
+                    >
+                        <InputNumber placeholder="请输入" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="抖音平台价格"
+                        name="douyin_price"
+                        rules={[ { message: '请输入抖音平台价格!' } ]}
+                    >
+                        <InputNumber placeholder="请输入" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="状态"
                         name="status"
                         rules={[ { required: true, message: '请选择!' } ]}
                     >
@@ -217,7 +285,7 @@ const Page = () => {
                     </Form.Item>
 
                     <Form.Item
-                        label="供应商备注"
+                        label="备注"
                         name="remark"
                         rules={[ { message: '请输入供应商备注!' } ]}
                     >

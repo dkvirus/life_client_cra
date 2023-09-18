@@ -307,3 +307,38 @@ export async function listDreamlinGoods() {
     })
     return result.detail.data
 }
+
+/* ******************************** dreamlin-sku ************************************* */
+export async function createDreamlinSku(data) {
+    const result = await request({
+        url: '/dreamlin/sku',
+        method: 'post',
+        data,
+    })
+    return result.detail.data
+}
+
+export async function removeDreamlinSku(id: string) {
+    const result = await request({
+        url: `/dreamlin/sku/${id}`,
+        method: 'delete',
+    })
+    return result.detail.data
+}
+
+export async function modifyDreamlinSku(data) {
+    const result = await request({
+        url: `/dreamlin/sku/${data.id}`,
+        method: 'put',
+        data,
+    })
+    return result.detail.data
+}
+
+export async function listDreamlinSkus() {
+    const result = await request({
+        url: '/dreamlin/skus',
+        method: 'get',
+    })
+    return result.detail.data
+}
