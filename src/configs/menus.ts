@@ -5,6 +5,7 @@ import SysPriv from 'pages/SysPriv'
 import SysDict from 'pages/SysDict'
 import DreamlinOrder from 'pages/DreamlinOrder'
 import DreamlinSupplier from 'pages/DreamlinSupplier'
+import DreamlinGood from 'pages/DreamlinGood'
 
 export const menus = [
     {
@@ -34,5 +35,9 @@ export const menus = [
     {
         pathname: '/dreamlin-supplier',
         component: DreamlinSupplier,
+    },
+    {
+        pathname: '/dreamlin-good',
+        component: DreamlinGood,
     },
 ]
