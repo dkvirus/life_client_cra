@@ -163,6 +163,7 @@ const Page = () => {
                 columns={columns}
                 bordered
                 rowKey={record => record.id}
+                pagination={false}
             />
             <Modal title="商品操作" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <Form
