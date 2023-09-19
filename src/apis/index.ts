@@ -28,7 +28,7 @@ export async function createUser(username: string) {
         method: 'post',
         params: { username },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function modifyUserPassword(username: string, password: string) {
@@ -37,7 +37,7 @@ export async function modifyUserPassword(username: string, password: string) {
         method: 'patch',
         params: { password },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function modifyUser(username: string, endDate: string, roles: string[]) {
@@ -50,7 +50,7 @@ export async function modifyUser(username: string, endDate: string, roles: strin
             roles,
         },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function listUsers() {
@@ -58,7 +58,7 @@ export async function listUsers() {
         url: '/users',
         method: 'get',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 /* ******************************** roles ************************************* */
@@ -72,7 +72,7 @@ export async function createRole(name: string, description: string, privs: strin
             privs,
         },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function removeRole(name: string) {
@@ -80,7 +80,7 @@ export async function removeRole(name: string) {
         url: `/role/${name}`,
         method: 'delete',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function modifyRole(name: string, description: string, privs: string[]) {
@@ -93,7 +93,7 @@ export async function modifyRole(name: string, description: string, privs: strin
             privs,
         },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function listRoles() {
@@ -101,7 +101,7 @@ export async function listRoles() {
         url: '/roles',
         method: 'get',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 /* ******************************** privs ************************************* */
@@ -114,7 +114,7 @@ export async function createPriv(name: string, description?: string) {
             description,
         },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function removePriv(name: string) {
@@ -122,7 +122,7 @@ export async function removePriv(name: string) {
         url: `/priv/${name}`,
         method: 'delete',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function modifyPriv(name: string, description?: string) {
@@ -134,7 +134,7 @@ export async function modifyPriv(name: string, description?: string) {
             description,
         },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function listPrivs() {
@@ -142,7 +142,7 @@ export async function listPrivs() {
         url: '/privs',
         method: 'get',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 /* ******************************** dicts ************************************* */
@@ -152,7 +152,7 @@ export async function createDict(data) {
         method: 'post',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function removeDict(code: string) {
@@ -160,7 +160,7 @@ export async function removeDict(code: string) {
         url: `/dict/${code}`,
         method: 'delete',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function modifyDict(data) {
@@ -169,7 +169,7 @@ export async function modifyDict(data) {
         method: 'put',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function listDicts() {
@@ -177,7 +177,7 @@ export async function listDicts() {
         url: '/dicts',
         method: 'get',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 /* ******************************** dreamlin-order ************************************* */
@@ -187,7 +187,7 @@ export async function createDreamlinOrder(data) {
         method: 'post',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function removeDreamlinOrder(id: string) {
@@ -195,7 +195,7 @@ export async function removeDreamlinOrder(id: string) {
         url: `/dreamlin/order/${id}`,
         method: 'delete',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function modifyDreamlinOrder(data) {
@@ -204,7 +204,7 @@ export async function modifyDreamlinOrder(data) {
         method: 'put',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function listDreamlinOrders({
@@ -225,7 +225,7 @@ export async function listDreamlinOrders({
             platform_supplier_id: platformSupplierId,
         },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 /* ******************************** dreamlin-supplier ************************************* */
@@ -235,7 +235,7 @@ export async function createDreamlinSupplier(data) {
         method: 'post',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function removeDreamlinSupplier(id: string) {
@@ -243,7 +243,7 @@ export async function removeDreamlinSupplier(id: string) {
         url: `/dreamlin/supplier/${id}`,
         method: 'delete',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function modifyDreamlinSupplier(data) {
@@ -252,7 +252,7 @@ export async function modifyDreamlinSupplier(data) {
         method: 'put',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function listDreamlinSuppliers({
@@ -270,7 +270,7 @@ export async function listDreamlinSuppliers({
             code,
         },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 /* ******************************** dreamlin-good ************************************* */
@@ -280,7 +280,7 @@ export async function createDreamlinGood(data) {
         method: 'post',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function removeDreamlinGood(id: string) {
@@ -288,7 +288,7 @@ export async function removeDreamlinGood(id: string) {
         url: `/dreamlin/good/${id}`,
         method: 'delete',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function modifyDreamlinGood(data) {
@@ -297,15 +297,28 @@ export async function modifyDreamlinGood(data) {
         method: 'put',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
-export async function listDreamlinGoods() {
+export async function modifyDreamlinGoodSkus(goodId, data: any[] = []) {
+    if (!Array.isArray(data)) return
+    const result = await request({
+        url: `/dreamlin/good/${goodId}/skus`,
+        method: 'put',
+        data: {
+            skus: data,
+        },
+    })
+    return result?.detail?.data
+}
+
+export async function listDreamlinGoods(keyword?: string) {
     const result = await request({
         url: '/dreamlin/goods',
         method: 'get',
+        params: { keyword },
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 /* ******************************** dreamlin-sku ************************************* */
@@ -315,7 +328,7 @@ export async function createDreamlinSku(data) {
         method: 'post',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function removeDreamlinSku(id: string) {
@@ -323,7 +336,7 @@ export async function removeDreamlinSku(id: string) {
         url: `/dreamlin/sku/${id}`,
         method: 'delete',
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function modifyDreamlinSku(data) {
@@ -332,7 +345,7 @@ export async function modifyDreamlinSku(data) {
         method: 'put',
         data,
     })
-    return result.detail.data
+    return result?.detail?.data
 }
 
 export async function listDreamlinSkus() {
@@ -340,5 +353,5 @@ export async function listDreamlinSkus() {
         url: '/dreamlin/skus',
         method: 'get',
     })
-    return result.detail.data
+    return result?.detail?.data
 }

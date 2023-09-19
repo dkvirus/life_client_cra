@@ -4,6 +4,7 @@
   "sideEffects": false,
   "private": true,
   "dependencies": {
+    "@ant-design/pro-components": "^2.6.22",
     "@reduxjs/toolkit": "^1.5.0",
     "antd": "^5.7.3",
     "axios": "^0.24.0",

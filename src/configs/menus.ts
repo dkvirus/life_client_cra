@@ -6,7 +6,6 @@ import SysDict from 'pages/SysDict'
 import DreamlinOrder from 'pages/DreamlinOrder'
 import DreamlinSupplier from 'pages/DreamlinSupplier'
 import DreamlinGood from 'pages/DreamlinGood'
-import DreamlinSku from 'pages/DreamlinSku'
 
 export const menus = [
     {
@@ -40,10 +39,6 @@ export const menus = [
     {
         pathname: '/dreamlin-good',
         component: DreamlinGood,
-    },
-    {
-        pathname: '/dreamlin-sku',
-        component: DreamlinSku,
     },
 ]
 
@@ -86,10 +81,5 @@ export const sideBarMenus = [
         key: 'dreamlin-good',
         label: '梦林的商品管理',
         privs: [ 'MENU_ML_GOOD_READ', 'MENU_ML_GOOD_WRITE' ],
-    },
-    {
-        key: 'dreamlin-sku',
-        label: '梦林的SKU管理',
-        privs: [ 'MENU_ML_SKU_READ', 'MENU_ML_SKU_WRITE' ],
     },
 ]
